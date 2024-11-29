@@ -51,6 +51,7 @@ export default function MyProfilList(props) {
       id: profile.id,
       nom: profile.nom,
       prenom: profile.prenom,
+      imageUri: profile.imageUri, // ou tout autre paramètre que vous voulez transmettre
     });
   };
 

@@ -19,6 +19,7 @@ export default function App() {
       <Stack.Screen name="Authentification" component={Authentification}/>
       <Stack.Screen name="Acceuil" component={Acceuil} options={{headerShown:true}}/>
       <Stack.Screen name="Chat" component={Chat} options={{headerShown:true}} />
+      
 
 
 

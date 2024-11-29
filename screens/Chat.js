@@ -13,7 +13,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function Chat({ route }) {
-  const { nom, prenom } = route.params; // Récupère les informations de l'utilisateur
+  const { nom, prenom, imageUri } = route.params; // Récupère les informations de l'utilisateur
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
@@ -24,7 +24,7 @@ export default function Chat({ route }) {
     const newMessage = {
       id: Date.now().toString(),
       text: inputText,
-      sender: "user", // Détermine si le message est envoyé par l'utilisateur
+      sender: "user", // Identifie l'expéditeur
     };
 
     setMessages([...messages, newMessage]);
@@ -38,6 +38,13 @@ export default function Chat({ route }) {
         item.sender === "user" ? styles.userMessage : styles.receivedMessage,
       ]}
     >
+      {/* Afficher l'image pour les messages reçus */}
+      {item.sender !== "user" && (
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.messageImage}
+        />
+      )}
       <Text style={styles.messageText}>{item.text}</Text>
     </View>
   );
@@ -47,7 +54,7 @@ export default function Chat({ route }) {
       {/* Barre supérieure */}
       <View style={styles.header}>
         <Image
-          source={require("../assets/profil.png")}
+          source={imageUri ? { uri: imageUri } : require("../assets/profil.png")}
           style={styles.profileImage}
         />
         <Text style={styles.headerText}>
@@ -56,15 +63,13 @@ export default function Chat({ route }) {
       </View>
 
       {/* Liste des messages */}
-     {/*
       <FlatList
         data={messages}
         renderItem={renderMessage}
         keyExtractor={(item) => item.id}
         style={styles.messageList}
         contentContainerStyle={{ paddingBottom: 20 }}
-      />*/}
-      <FlatList />
+      />
 
       {/* Zone de saisie */}
       <KeyboardAvoidingView
@@ -118,6 +123,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
     borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   userMessage: {
     alignSelf: "flex-end",
@@ -126,6 +133,12 @@ const styles = StyleSheet.create({
   receivedMessage: {
     alignSelf: "flex-start",
     backgroundColor: "#e0e0e0",
+  },
+  messageImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
   },
   messageText: {
     fontSize: 16,
